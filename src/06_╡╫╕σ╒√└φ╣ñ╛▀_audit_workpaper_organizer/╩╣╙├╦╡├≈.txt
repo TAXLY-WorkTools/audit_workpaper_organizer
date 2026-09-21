@@ -1,0 +1,6 @@
+点击main.py进入程序
+
+依赖库：
+pip install PyQt5 pywin32 PyMuPDF img2pdf olefile pandas numpy openpyxl lxml -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
