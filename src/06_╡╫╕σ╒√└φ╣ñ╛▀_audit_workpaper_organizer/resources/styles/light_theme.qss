@@ -1,0 +1,67 @@
+/* ============================================================
+   审计底稿合并工具 - 极简微调样式
+   配色方案：莫兰迪柔和绿色系
+   ============================================================ */
+
+/* ---------- 工具栏按钮间距 ---------- */
+QToolBar {
+    spacing: 10px;
+}
+
+/* ---------- 重点按钮（柔和灰绿色系，不刺眼） ---------- */
+QPushButton[primary="true"] {
+    background-color: #B8D4B8;
+    color: #1A1A2E;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-weight: bold;
+}
+
+QPushButton[primary="true"]:hover {
+    background-color: #A0C8A0;
+}
+
+QPushButton[primary="true"]:pressed {
+    background-color: #88B888;
+}
+
+/* ---------- 表格 ---------- */
+QTableWidget {
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    gridline-color: #d0d0d0;
+}
+
+QHeaderView::section {
+    background-color: #f0f0f0;
+    padding: 6px 8px;
+    border: none;
+    border-bottom: 2px solid #a0a0a0;
+    font-weight: bold;
+    color: #1A1A2E;
+}
+
+QHeaderView::section:horizontal {
+    border-right: 1px solid #e0e0e0;
+}
+QHeaderView::section:horizontal:last {
+    border-right: none;
+}
+
+QTableWidget::item {
+    padding: 6px 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 选中行：极淡灰绿，不刺眼 */
+QTableWidget::item:selected {
+    background-color: #EEF4EE;
+    color: #1A1A2E;
+}
+
+/* ---------- 树 ---------- */
+QTreeWidget::item:selected {
+    background-color: #EEF4EE;
+    color: #1A1A2E;
+}
