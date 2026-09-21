@@ -1,0 +1,869 @@
+# 工具下载配置（由上传脚本自动生成，请勿手动修改）
+ai_prompt = """
+# 1、测试对话上传导出的md.格式是...
+
+**问题详情：**
+测试对话上传导出的md.格式是否能正常显示 ，报告目前deepseek的ai agent价格？/百万
+
+---
+
+> 用户想测试Markdown导出功能，并查询DeepSeek AI Agent的价格。我需要搜索“DeepSeek AI Agent 价格 每百万tokens”和“DeepSeek Agent 定价”来获取信息。我会优先考虑官方来源。为了确保信息的全面性和准确性，我会同时进行多项搜索，以覆盖可能的价格页面和官方公告。
+
+**回答（Answer）：**
+
+Markdown格式渲染正常，可以清晰展示标题、表格和列表结构。以下是DeepSeek AI Agent相关模型的价格信息（以百万tokens为单位，人民币计价）：
+
+## 价格概览
+
+### DeepSeek-V4-Pro（Agent能力最强）
+
+| 计费项 | 空闲时段 | 高峰时段 |
+| --- | --- | --- |
+| 输入（缓存命中） | 0.15元 | 0.30元 |
+| 输入（缓存未命中） | 4.5元 | 9.0元 |
+| 输出 | 13.5元 | 27.0元 |
+
+### DeepSeek-V4.1-Flash（性价比之选，Agent任务性能接近Pro）
+
+| 计费项 | 空闲时段 | 高峰时段 |
+| --- | --- | --- |
+| 输入（缓存命中） | 0.02元 | 0.04元 |
+| 输入（缓存未命中） | 1元 | 2元 |
+| 输出 | 4元 | 8元 |
+
+> **说明**：空闲时段价格为高峰时段的一半。高峰时段为北京时间周一至周五 9:00–12:00、14:00–18:00，其余为空闲时段。
+
+## 关键背景
+
+- **V4 Pro 正式版定价**：每百万Token输入 **3元**、输出 **6元**（缓存命中输入 **0.025元**），约为 Claude Fable 5 输出价格的 **1/57**。-
+- **V4 Pro 的 Agent 能力**：仅通过重新后训练，在多项 Agent 基准测试上大幅跃升——DeepSWE 得分从 12.8 涨至 **62.7**（近4倍），Terminal Bench 2.1 达 **87.9分**，距 Fable 5 仅差 0.1 分。
+- **Flash 的定位**：以约 Pro 三分之一的价格、**5倍**的并发额度（Flash 并发 2500，Pro 仅 500）承担走量任务，在简单 Agent 任务上表现与 Pro 持平。
+- **Pro 下线计划**：官方计划有序下线 V4 Pro。2026 年 9 月 14 日 12:00 后，访问 `deepseek-v4-pro` 的请求将全部路由到 V4.1 Flash，并按 Flash 价格计费。
+
+如果你想了解某个具体场景下的成本估算，可以告诉我输入/输出的 token 规模，我帮你算一下。
+
+---
+
+# 2、第二轮对话，其他大模型的 价格...
+
+**问题详情：**
+第二轮对话，其他大模型的 价格呢？
+
+---
+
+> 用户想知道其他主流大模型（如OpenAI的GPT、Anthropic的Claude、Google的Gemini等）在AI Agent任务上的API价格，并以“元/百万token”为单位进行对比。我需要提供最新的价格信息。为了确保信息的全面性和准确性，我将同时进行多项搜索，覆盖不同模型和可能的计价方式。
+
+**回答（Answer）：**
+
+以下是截至2026年9月，其他主流大模型在AI Agent任务上的API价格对比。为便于与DeepSeek对比，美元价格按**1 USD ≈ 7.1 CNY**换算为人民币，人民币价格直接列出。
+
+---
+
+## 国际主流模型
+
+### OpenAI（GPT系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 缓存输入（元/百万） |
+| --- | --- | --- | --- |
+| GPT-5.6 Sol | 35.5 | 213 | 3.55 |
+| GPT-5.6 Terra | 14.2 | 85.2 | 1.42 |
+| GPT-5.6 Luna | 1.42 | 8.52 | 0.142 |
+| GPT-5.5 Pro | 213 | 1278 | — |
+
+OpenAI旗舰模型GPT-5.6 Sol定价为$5/$30每百万tokens，缓存输入$0.50。轻量级GPT-5.6 Luna仅$0.20/$1.20，缓存输入$0.02，适合高并发Agent场景。GPT-5.5 Pro输出高达$180/百万，属于极端高端定位。
+
+---
+
+### Anthropic（Claude系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） |
+| --- | --- | --- |
+| Claude Fable 5.1 | 71 | 355 |
+| Claude Opus 5 | 35.5 | 177.5 |
+| Claude Sonnet 5 | 14.2 | 71 |
+| Claude Haiku 4.5 | 7.1 | 35.5 |
+
+Claude Opus 5定价为$5/$25，Claude Fable 5.1为$10/$50。Sonnet 5以$2/$10提供接近旗舰的Agent能力，Haiku 4.5则以$1/$5覆盖低成本场景-。Anthropic全系支持1M上下文窗口且无长上下文溢价。
+
+---
+
+### Google（Gemini系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 备注 |
+| --- | --- | --- | --- |
+| Gemini 3.1 Pro | 14.2 | 85.2 | 200K以内；超200K翻倍 |
+| Gemini 3.8 Flash | 5.33 | 26.6 | 2026年底前促销价 |
+| Gemini 3.5 Flash | ~1.07 | ~5.33 | 更早版本 |
+
+Gemini 3.1 Pro定价$2/$12，输入超过200K tokens后升至$4/$18-。Gemini 3.8 Flash当前促销价为$0.75/$3.75，2027年1月1日起将翻倍至$1.50/$7.50。Flash系列在Agent任务上以极低成本提供可用能力，是走量场景的有力选择。
+
+---
+
+### xAI（Grok系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 缓存输入（元/百万） |
+| --- | --- | --- | --- |
+| Grok 4.6 | 14.2 | 42.6 | 3.55 |
+| Grok 4.3 | 8.88 | 17.75 | — |
+| Grok 4.1 Fast | 1.42 | — | — |
+
+Grok 4.6定价$2/$6，缓存输入$0.50-。Grok 4.1 Fast输入仅$0.20/百万，并内置实时X搜索能力，适合需要外部信息获取的Agent场景-。
+
+---
+
+### Meta（Llama系列，开源，按托管平台计价）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 上下文 |
+| --- | --- | --- | --- |
+| Llama 4 Scout | ~0.78 | ~2.41 | 10M tokens |
+| Llama 4 Maverick | ~1.42 | ~4.26 | 10M tokens |
+| Llama 3.3 70B | ~5.68 | ~5.68 | 128K |
+
+Llama 4 Scout输入低至$0.08–$0.15/百万，配合10M上下文，在长文档Agent场景中具有独特优势-。价格因托管平台差异较大，同一模型在不同平台可相差十倍以上-。
+
+---
+
+## 国内主流模型
+
+### 阿里云（通义千问 Qwen系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 缓存命中（元/百万） |
+| --- | --- | --- | --- |
+| Qwen3.8-Max | 12 | 36 | 1.5 |
+| Qwen3.8-Flash | ~1.07 | ~3.34 | ~0.11 |
+| Qwen3.7-Max | ~17.75 | ~53.25 | ~3.55 |
+
+Qwen3.8-Max国内定价为输入12元、输出36元，缓存命中仅1.5元/百万tokens，国际价格约为Claude Opus 5的40%（输入）和24%（输出）-。Qwen3.8-Flash以$0.15/$0.47的超低定价覆盖轻量Agent场景-。
+
+---
+
+### 智谱AI（GLM系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 缓存命中（元/百万） |
+| --- | --- | --- | --- |
+| GLM-5.2 | 8 | 28 | 2 |
+| GLM-5.3 | 7.6 | 26.6 | 1.9 |
+| GLM-5V-Turbo（多模态Agent） | 5 | 22 | 0.5 |
+
+GLM-5.2以¥8/¥28的定价提供约753B参数（激活40B）的MoE架构和100万token上下文-。GLM-5V-Turbo是智谱首个多模态Agent基座模型，输入¥5、输出¥22，缓存读取仅¥0.5，面向视觉编程与复杂任务-。
+
+---
+
+### 字节跳动（豆包 Doubao系列）
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 备注 |
+| --- | --- | --- | --- |
+| Doubao-Seed-2.1-Pro | 按输入长度分档 | 按输入长度分档 | 最高约0.8/8（16K档） |
+| Doubao-Seed-2.1-Turbo | 3 | 15 | 高速推理 |
+| Doubao 2.0 Lite | 0.6 | — | 极低成本定位 |
+
+豆包采用**输入长度分档定价**，以16K输入为例，输入单价0.8元、输出8元/百万tokens-。Seed-2.1-Turbo以¥3/¥15定位高速推理Agent，支持256K上下文-。
+
+---
+
+### MiniMax
+
+| 模型 | 输入（元/百万） | 输出（元/百万） | 缓存命中（元/百万） |
+| --- | --- | --- | --- |
+| MiniMax-M3 | 4.2 | 16.8 | 0.84 |
+| MiniMax-M2.7 | 2.1 | 8.4 | 0.21 |
+| MiniMax-M2.7 Highspeed | 4.2 | 16.8 | — |
+
+MiniMax-M2.7以¥2.1/¥8.4定价，缓存命中低至¥0.21/百万，是当前国内极具价格竞争力的Agent选择-。Highspeed版本价格翻倍以换取更快响应。
+
+---
+
+## 关键对比：Agent任务成本定位
+
+将各家旗舰与走量模型放在一起，以**输出价格**为基准（Agent任务输出通常远多于输入，输出成本占主导）：
+
+| 层级 | 代表模型 | 输出价格（元/百万） |
+| --- | --- | --- |
+| 极致走量 | Gemini 3.8 Flash（促销）、Qwen3.8-Flash | 3.3–26.6 |
+| 高性价比Agent | MiniMax-M2.7、豆包Seed-2.1-Turbo、GLM-5V-Turbo | 8.4–22 |
+| 主力Agent | **DeepSeek V4.1 Flash** | **8–16** |
+| 旗舰Agent | Claude Opus 5、Qwen3.8-Max、GPT-5.6 Terra | 36–177 |
+| 顶级Agent | **DeepSeek V4-Pro**、Claude Fable 5.1、GPT-5.6 Sol | **27–355** |
+
+DeepSeek V4-Pro输出定价27元/百万（高峰），Claude Fable 5.1输出355元/百万，前者约为后者的**1/13**。在Flash层级，DeepSeek V4.1 Flash（8–16元）与MiniMax M2.7（8.4元）、豆包Turbo（15元）处于同一价格带，均瞄准高并发Agent走量场景。
+
+如果需要针对某个具体模型做同规模任务下的成本估算，可以告诉我你的典型输入/输出token配比。
+
+链接：[DeepSeek_对话链接](https://chat.deepseek.com/share/5pfbtlp4fbnunkfsvf)
+"""
+download_type = "release"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/audit_workpaper_organizer_full.zip"
+program_download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/audit_workpaper_organizer_src.zip"
+
+[[files]]
+name = "README.md"
+path = "README.md"
+asset_name = "README.md"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/README.md"
+size = 2959
+
+[[files]]
+name = "prompt.md"
+path = "prompts/prompt.md"
+asset_name = "prompt.md"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/prompt.md"
+size = 8756
+
+[[files]]
+name = "PixPin_2026-09-21_15-01-50.png"
+path = "images/PixPin_2026-09-21_15-01-50.png"
+asset_name = "PixPin_2026-09-21_15-01-50.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_15-01-50.png"
+size = 189577
+
+[[files]]
+name = "PixPin_2026-09-21_14-37-55.png"
+path = "images/PixPin_2026-09-21_14-37-55.png"
+asset_name = "PixPin_2026-09-21_14-37-55.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_14-37-55.png"
+size = 236172
+
+[[files]]
+name = "PixPin_2026-09-21_14-14-22.png"
+path = "images/PixPin_2026-09-21_14-14-22.png"
+asset_name = "PixPin_2026-09-21_14-14-22.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_14-14-22.png"
+size = 162249
+
+[[files]]
+name = "PixPin_2026-09-21_14-53-47.png"
+path = "images/PixPin_2026-09-21_14-53-47.png"
+asset_name = "PixPin_2026-09-21_14-53-47.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_14-53-47.png"
+size = 270271
+
+[[files]]
+name = "PixPin_2026-09-21_14-29-13.png"
+path = "images/PixPin_2026-09-21_14-29-13.png"
+asset_name = "PixPin_2026-09-21_14-29-13.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_14-29-13.png"
+size = 63984
+
+[[files]]
+name = "PixPin_2026-09-21_14-26-34.png"
+path = "images/PixPin_2026-09-21_14-26-34.png"
+asset_name = "PixPin_2026-09-21_14-26-34.png"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/PixPin_2026-09-21_14-26-34.png"
+size = 323226
+
+[[files]]
+name = "╩╣╙├╦╡├≈.txt"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/╩╣╙├╦╡├≈.txt"
+asset_name = ".txt"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/.txt"
+size = 169
+
+[[files]]
+name = "config.ini"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/config.ini"
+asset_name = "config.ini"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/config.ini"
+size = 0
+
+[[files]]
+name = "main.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/main.py"
+asset_name = "main.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/main.py"
+size = 3255
+
+[[files]]
+name = "app.ico"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/app.ico"
+asset_name = "app.ico"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/app.ico"
+size = 32489
+
+[[files]]
+name = "dialogs.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/dialogs.py"
+asset_name = "dialogs.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/dialogs.py"
+size = 15895
+
+[[files]]
+name = "switch_panel.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/switch_panel.py"
+asset_name = "switch_panel.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/switch_panel.py"
+size = 6922
+
+[[files]]
+name = "main_window.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/main_window.py"
+asset_name = "main_window.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/main_window.py"
+size = 65594
+
+[[files]]
+name = "retry_dialog.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/retry_dialog.py"
+asset_name = "retry_dialog.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/retry_dialog.py"
+size = 14282
+
+[[files]]
+name = "left_panel.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/left_panel.py"
+asset_name = "left_panel.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/left_panel.py"
+size = 0
+
+[[files]]
+name = "worker_thread.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/worker_thread.py"
+asset_name = "worker_thread.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/worker_thread.py"
+size = 25939
+
+[[files]]
+name = "icon_manager.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/icon_manager.py"
+asset_name = "icon_manager.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/icon_manager.py"
+size = 4171
+
+[[files]]
+name = "init.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/init.py"
+asset_name = "init.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/init.py"
+size = 77
+
+[[files]]
+name = "log_dialog.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/log_dialog.py"
+asset_name = "log_dialog.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/log_dialog.py"
+size = 5046
+
+[[files]]
+name = "folder_import_dialog.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/folder_import_dialog.py"
+asset_name = "folder_import_dialog.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_import_dialog.py"
+size = 13439
+
+[[files]]
+name = "right_panel.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/right_panel.py"
+asset_name = "right_panel.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/right_panel.py"
+size = 0
+
+[[files]]
+name = "new_project_dialog.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/new_project_dialog.py"
+asset_name = "new_project_dialog.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/new_project_dialog.py"
+size = 5505
+
+[[files]]
+name = "project_workspace.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/project_workspace.py"
+asset_name = "project_workspace.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/project_workspace.py"
+size = 15295
+
+[[files]]
+name = "progress_window.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/gui/progress_window.py"
+asset_name = "progress_window.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/progress_window.py"
+size = 9005
+
+[[files]]
+name = "models.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/models.py"
+asset_name = "models.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/models.py"
+size = 5009
+
+[[files]]
+name = "folder_importer.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/folder_importer.py"
+asset_name = "folder_importer.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_importer.py"
+size = 1436
+
+[[files]]
+name = "converters.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/converters.py"
+asset_name = "converters.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/converters.py"
+size = 4100
+
+[[files]]
+name = "merger.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/merger.py"
+asset_name = "merger.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/merger.py"
+size = 269
+
+[[files]]
+name = "error_handler.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/error_handler.py"
+asset_name = "error_handler.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/error_handler.py"
+size = 498
+
+[[files]]
+name = "init.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/init.py"
+asset_name = "init_1.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/init_1.py"
+size = 66
+
+[[files]]
+name = "project_manager.py"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/core/project_manager.py"
+asset_name = "project_manager.py"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/project_manager.py"
+size = 10972
+
+[[files]]
+name = "folder_open_workspace_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_workspace_title.svg"
+asset_name = "folder_open_workspace_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_workspace_title.svg"
+size = 659
+
+[[files]]
+name = "trash_clear_dialog.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/trash_clear_dialog.svg"
+asset_name = "trash_clear_dialog.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/trash_clear_dialog.svg"
+size = 502
+
+[[files]]
+name = "folder_open_drag_internal.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_drag_internal.svg"
+asset_name = "folder_open_drag_internal.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_drag_internal.svg"
+size = 597
+
+[[files]]
+name = "play_template_preview.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/play_template_preview.svg"
+asset_name = "play_template_preview.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/play_template_preview.svg"
+size = 666
+
+[[files]]
+name = "file_add_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/file_add_button.svg"
+asset_name = "file_add_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/file_add_button.svg"
+size = 497
+
+[[files]]
+name = "folder_open_toolbar_workbench.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_toolbar_workbench.svg"
+asset_name = "folder_open_toolbar_workbench.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_toolbar_workbench.svg"
+size = 659
+
+[[files]]
+name = "sync_refresh.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/sync_refresh.svg"
+asset_name = "sync_refresh.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/sync_refresh.svg"
+size = 519
+
+[[files]]
+name = "list_dialog_selected.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/list_dialog_selected.svg"
+asset_name = "list_dialog_selected.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/list_dialog_selected.svg"
+size = 581
+
+[[files]]
+name = "search_import_dialog.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/search_import_dialog.svg"
+asset_name = "search_import_dialog.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/search_import_dialog.svg"
+size = 539
+
+[[files]]
+name = "upload_template_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/upload_template_button.svg"
+asset_name = "upload_template_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/upload_template_button.svg"
+size = 578
+
+[[files]]
+name = "hourglass_progress_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/hourglass_progress_title.svg"
+asset_name = "hourglass_progress_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/hourglass_progress_title.svg"
+size = 537
+
+[[files]]
+name = "plus_add_file.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/plus_add_file.svg"
+asset_name = "plus_add_file.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/plus_add_file.svg"
+size = 497
+
+[[files]]
+name = "sort_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/sort_button.svg"
+asset_name = "sort_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/sort_button.svg"
+size = 479
+
+[[files]]
+name = "play_export_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/play_export_button.svg"
+asset_name = "play_export_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/play_export_button.svg"
+size = 716
+
+[[files]]
+name = "minus_circle_collapse.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/minus_circle_collapse.svg"
+asset_name = "minus_circle_collapse.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/minus_circle_collapse.svg"
+size = 771
+
+[[files]]
+name = "arrow_up_group.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/arrow_up_group.svg"
+asset_name = "arrow_up_group.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/arrow_up_group.svg"
+size = 487
+
+[[files]]
+name = "times_circle_retry_fail.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_circle_retry_fail.svg"
+asset_name = "times_circle_retry_fail.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_circle_retry_fail.svg"
+size = 498
+
+[[files]]
+name = "search_workspace.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/search_workspace.svg"
+asset_name = "search_workspace.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/search_workspace.svg"
+size = 563
+
+[[files]]
+name = "times_remove_file.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_remove_file.svg"
+asset_name = "times_remove_file.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_remove_file.svg"
+size = 600
+
+[[files]]
+name = "folder_dialog_sidebar.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_dialog_sidebar.svg"
+asset_name = "folder_dialog_sidebar.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_dialog_sidebar.svg"
+size = 500
+
+[[files]]
+name = "edit_rename_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/edit_rename_button.svg"
+asset_name = "edit_rename_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/edit_rename_button.svg"
+size = 578
+
+[[files]]
+name = "times_circle_retry_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_circle_retry_title.svg"
+asset_name = "times_circle_retry_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_circle_retry_title.svg"
+size = 498
+
+[[files]]
+name = "plus_add_subgroup.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/plus_add_subgroup.svg"
+asset_name = "plus_add_subgroup.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/plus_add_subgroup.svg"
+size = 511
+
+[[files]]
+name = "times_circle_table_missing.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_circle_table_missing.svg"
+asset_name = "times_circle_table_missing.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_circle_table_missing.svg"
+size = 498
+
+[[files]]
+name = "thumbtack_move_first.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/thumbtack_move_first.svg"
+asset_name = "thumbtack_move_first.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/thumbtack_move_first.svg"
+size = 741
+
+[[files]]
+name = "lightbulb_new_project_tip.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/lightbulb_new_project_tip.svg"
+asset_name = "lightbulb_new_project_tip.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/lightbulb_new_project_tip.svg"
+size = 612
+
+[[files]]
+name = "plus_circle_switch_new.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/plus_circle_switch_new.svg"
+asset_name = "plus_circle_switch_new.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/plus_circle_switch_new.svg"
+size = 606
+
+[[files]]
+name = "times_delete_group.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_delete_group.svg"
+asset_name = "times_delete_group.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_delete_group.svg"
+size = 622
+
+[[files]]
+name = "arrow_down_file.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/arrow_down_file.svg"
+asset_name = "arrow_down_file.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/arrow_down_file.svg"
+size = 479
+
+[[files]]
+name = "logo.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/logo.svg"
+asset_name = "logo.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/logo.svg"
+size = 659
+
+[[files]]
+name = "close_panel.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/close_panel.svg"
+asset_name = "close_panel.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/close_panel.svg"
+size = 460
+
+[[files]]
+name = "folder_new_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_new_button.svg"
+asset_name = "folder_new_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_new_button.svg"
+size = 511
+
+[[files]]
+name = "file_table_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/file_table_title.svg"
+asset_name = "file_table_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/file_table_title.svg"
+size = 578
+
+[[files]]
+name = "folder_switch_panel_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_switch_panel_title.svg"
+asset_name = "folder_switch_panel_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_switch_panel_title.svg"
+size = 478
+
+[[files]]
+name = "trash_clear_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/trash_clear_button.svg"
+asset_name = "trash_clear_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/trash_clear_button.svg"
+size = 502
+
+[[files]]
+name = "save_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/save_button.svg"
+asset_name = "save_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/save_button.svg"
+size = 634
+
+[[files]]
+name = "bars_switch_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/bars_switch_button.svg"
+asset_name = "bars_switch_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/bars_switch_button.svg"
+size = 481
+
+[[files]]
+name = "check_circle_status_success.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/check_circle_status_success.svg"
+asset_name = "check_circle_status_success.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/check_circle_status_success.svg"
+size = 445
+
+[[files]]
+name = "folder_open_tree_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_tree_title.svg"
+asset_name = "folder_open_tree_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_tree_title.svg"
+size = 498
+
+[[files]]
+name = "step_forward_skip.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/step_forward_skip.svg"
+asset_name = "step_forward_skip.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/step_forward_skip.svg"
+size = 683
+
+[[files]]
+name = "trash_delete_workspace.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/trash_delete_workspace.svg"
+asset_name = "trash_delete_workspace.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/trash_delete_workspace.svg"
+size = 502
+
+[[files]]
+name = "list_log_title.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/list_log_title.svg"
+asset_name = "list_log_title.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/list_log_title.svg"
+size = 593
+
+[[files]]
+name = "arrow_down_group.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/arrow_down_group.svg"
+asset_name = "arrow_down_group.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/arrow_down_group.svg"
+size = 479
+
+[[files]]
+name = "arrow_up_file.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/arrow_up_file.svg"
+asset_name = "arrow_up_file.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/arrow_up_file.svg"
+size = 487
+
+[[files]]
+name = "file_show_files_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/file_show_files_button.svg"
+asset_name = "file_show_files_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/file_show_files_button.svg"
+size = 513
+
+[[files]]
+name = "warning_status.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/warning_status.svg"
+asset_name = "warning_status.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/warning_status.svg"
+size = 451
+
+[[files]]
+name = "times_remove_dialog.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_remove_dialog.svg"
+asset_name = "times_remove_dialog.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_remove_dialog.svg"
+size = 622
+
+[[files]]
+name = "times_circle_status_fail.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/times_circle_status_fail.svg"
+asset_name = "times_circle_status_fail.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/times_circle_status_fail.svg"
+size = 498
+
+[[files]]
+name = "hourglass_retrying.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/hourglass_retrying.svg"
+asset_name = "hourglass_retrying.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/hourglass_retrying.svg"
+size = 537
+
+[[files]]
+name = "warning_export_dialog.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/warning_export_dialog.svg"
+asset_name = "warning_export_dialog.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/warning_export_dialog.svg"
+size = 451
+
+[[files]]
+name = "folder_open_workspace_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_workspace_button.svg"
+asset_name = "folder_open_workspace_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_workspace_button.svg"
+size = 498
+
+[[files]]
+name = "thumbtack_table_first_row.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/thumbtack_table_first_row.svg"
+asset_name = "thumbtack_table_first_row.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/thumbtack_table_first_row.svg"
+size = 495
+
+[[files]]
+name = "check_circle_retry_success.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/check_circle_retry_success.svg"
+asset_name = "check_circle_retry_success.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/check_circle_retry_success.svg"
+size = 445
+
+[[files]]
+name = "sign_out_exit.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/sign_out_exit.svg"
+asset_name = "sign_out_exit.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/sign_out_exit.svg"
+size = 681
+
+[[files]]
+name = "folder_open_drag_external.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_open_drag_external.svg"
+asset_name = "folder_open_drag_external.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_open_drag_external.svg"
+size = 597
+
+[[files]]
+name = "folder_import_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/folder_import_button.svg"
+asset_name = "folder_import_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/folder_import_button.svg"
+size = 511
+
+[[files]]
+name = "lightbulb_import_tip.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/lightbulb_import_tip.svg"
+asset_name = "lightbulb_import_tip.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/lightbulb_import_tip.svg"
+size = 612
+
+[[files]]
+name = "thumbtack_move_last.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/thumbtack_move_last.svg"
+asset_name = "thumbtack_move_last.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/thumbtack_move_last.svg"
+size = 728
+
+[[files]]
+name = "plus_circle_new_project.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/plus_circle_new_project.svg"
+asset_name = "plus_circle_new_project.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/plus_circle_new_project.svg"
+size = 606
+
+[[files]]
+name = "thumbtack_title_project.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/thumbtack_title_project.svg"
+asset_name = "thumbtack_title_project.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/thumbtack_title_project.svg"
+size = 601
+
+[[files]]
+name = "check_circle_table_exists.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/check_circle_table_exists.svg"
+asset_name = "check_circle_table_exists.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/check_circle_table_exists.svg"
+size = 445
+
+[[files]]
+name = "list_log_button.svg"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/icons/list_log_button.svg"
+asset_name = "list_log_button.svg"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/list_log_button.svg"
+size = 593
+
+[[files]]
+name = "light_theme.qss"
+path = "src/06_╡╫╕σ╒√└φ╣ñ╛▀_audit_workpaper_organizer/resources/styles/light_theme.qss"
+asset_name = "light_theme.qss"
+download_url = "https://github.com/TAXLY-WorkTools/audit_workpaper_organizer/releases/download/v1.0.0/light_theme.qss"
+size = 1542
+
